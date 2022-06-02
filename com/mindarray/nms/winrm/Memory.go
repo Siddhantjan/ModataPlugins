@@ -26,11 +26,13 @@ func Memory(credentials map[string]interface{}) {
 	clients, er := client.CreateShell()
 	defer clients.Close()
 	if er != nil {
+
 		errors = append(errors, er.Error())
 		result["status"] = "fail"
 		result["error"] = errors
 		data, _ := json.Marshal(result)
 		fmt.Print(string(data))
+
 	} else {
 		a := "aa"
 		output := ""
@@ -45,6 +47,7 @@ func Memory(credentials map[string]interface{}) {
 		totalSpace := float64(totalSpaceMemory + totalSpaceVirtual)
 		freeSpace := float64(freeSpaceVirtual + freeSpaceMemory)
 		percent := float64(freeSpace/totalSpace) * 100
+
 		result["memory.total.bytes"] = totalSpaceMemory * 1000
 		result["memory.free.bytes"] = freeSpaceMemory * 1000
 		result["memory.used.bytes"] = (totalSpaceMemory - freeSpaceMemory) * 1000
@@ -57,6 +60,7 @@ func Memory(credentials map[string]interface{}) {
 		result["ip"] = credentials["ip"]
 		result["metric.group"] = credentials["metric.group"]
 		result["status"] = "success"
+
 		data, _ := json.Marshal(result)
 		fmt.Print(string(data))
 	}

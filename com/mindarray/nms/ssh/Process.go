@@ -47,9 +47,9 @@ func Process(credentials map[string]interface{}) {
 		output := string(combo)
 		splitByLine := strings.Split(output, "\n")
 		var processes []map[string]interface{}
-		for processIterator := 1; processIterator < len(splitByLine)-1; processIterator++ {
+		for index := 1; index < len(splitByLine)-1; index++ {
 			processValue := make(map[string]interface{})
-			res := strings.Split(splitByLine[processIterator], " ")
+			res := strings.Split(splitByLine[index], " ")
 			processValue["process.user"] = res[0]
 			processValue["process.id"] = res[1]
 			processValue["process.memory.percentage"] = res[3]

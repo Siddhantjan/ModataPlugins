@@ -39,12 +39,12 @@ func Process(credentials map[string]interface{}) {
 		var processes []map[string]interface{}
 		processes = append(processes, result)
 		var count int
-		for i := 0; i < len(value); i++ {
+		for index := 0; index < len(value); index++ {
 			temp := make(map[string]interface{})
 			temp1 := make(map[string]interface{})
-			processName := value[i][1]
-			for j := 0; j < len(processes); j++ {
-				temp = processes[j]
+			processName := value[index][1]
+			for subIndex := 0; subIndex < len(processes); subIndex++ {
+				temp = processes[subIndex]
 				if temp[processName] != nil {
 					count = 1
 					break
@@ -54,22 +54,22 @@ func Process(credentials map[string]interface{}) {
 			}
 			if count == 0 {
 				temp1["process.name"] = processName
-				if (value[i][2]) == "id process\r" {
-					temp1["process.id"] = value[i][3]
-				} else if value[i][2] == "% processor time\r" {
-					temp1["process.processor.time.percent"] = value[i][3]
-				} else if value[i][2] == "thread count\r" {
-					temp1["process.thread.count"] = value[i][3]
+				if (value[index][2]) == "id process\r" {
+					temp1["process.id"] = value[index][3]
+				} else if value[index][2] == "% processor time\r" {
+					temp1["process.processor.time.percent"] = value[index][3]
+				} else if value[index][2] == "thread count\r" {
+					temp1["process.thread.count"] = value[index][3]
 				}
 				processes = append(processes, temp1)
 
 			} else {
-				if (value[i][2]) == "id process\r" {
-					temp["process.id"] = value[i][3]
-				} else if value[i][2] == "% processor time\r" {
-					temp["process.processor.time.percent"] = value[i][3]
-				} else if value[i][2] == "thread count\r" {
-					temp["process.thread.count"] = value[i][3]
+				if (value[index][2]) == "id process\r" {
+					temp["process.id"] = value[index][3]
+				} else if value[index][2] == "% processor time\r" {
+					temp["process.processor.time.percent"] = value[index][3]
+				} else if value[index][2] == "thread count\r" {
+					temp["process.thread.count"] = value[index][3]
 				}
 				count = 1
 				processes = append(processes, temp)

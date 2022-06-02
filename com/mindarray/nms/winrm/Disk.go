@@ -25,13 +25,17 @@ func Disk(credentials map[string]interface{}) {
 	}
 	clients, er := client.CreateShell()
 	defer clients.Close()
+
 	if er != nil {
+
 		errors = append(errors, er.Error())
 		result["status"] = "fail"
 		result["error"] = errors
 		data, _ := json.Marshal(result)
 		fmt.Print(string(data))
+
 	} else {
+
 		a := "aa"
 		output := ""
 		ac := "Get-WmiObject win32_logicaldisk |Foreach-Object {$_.DeviceId,$_.Freespace,$_.Size}"
@@ -41,10 +45,11 @@ func Disk(credentials map[string]interface{}) {
 		var usedBytes int64
 		var totalBytes int64
 
-		for diskCounter := 0; diskCounter < len(res); diskCounter = diskCounter + 3 {
+		for index := 0; index < len(res); index = index + 3 {
 			disk := make(map[string]interface{})
-			disk["Disk.Name"] = strings.Split(res[diskCounter], ":")[0]
-			if (diskCounter+1) > len(res) || res[diskCounter+1] == "" {
+			disk["Disk.Name"] = strings.Split(res[index], ":")[0]
+
+			if (index+1) > len(res) || res[index+1] == "" {
 				disk["disk.free.bytes"] = 0
 				disk["disk.total.bytes"] = 0
 				disk["disk.available.bytes"] = 0
@@ -53,16 +58,19 @@ func Disk(credentials map[string]interface{}) {
 				disks = append(disks, disk)
 				break
 			}
-			bytes, _ := strconv.ParseInt(res[diskCounter+1], 10, 64)
+
+			bytes, _ := strconv.ParseInt(res[index+1], 10, 64)
 			usedBytes = usedBytes + bytes
-			disk["disk.available.bytes"], _ = strconv.ParseInt(res[diskCounter+1], 10, 64)
-			bytes, _ = strconv.ParseInt(res[diskCounter+2], 10, 64)
+			disk["disk.available.bytes"], _ = strconv.ParseInt(res[index+1], 10, 64)
+			bytes, _ = strconv.ParseInt(res[index+2], 10, 64)
 			totalBytes = totalBytes + bytes
+
 			disk["disk.total.bytes"] = bytes
 			disk["disk.used.bytes"] = (disk["disk.total.bytes"]).(int64) - (disk["disk.available.bytes"]).(int64)
 			disk["disk.used.percent"] = ((float64((disk["disk.total.bytes"]).(int64)) - float64((disk["disk.used.bytes"]).(int64))) / float64((disk["disk.total.bytes"].(int64)))) * 100
 			disk["disk.free.percent"] = 100 - disk["disk.used.percent"].(float64)
 			disks = append(disks, disk)
+
 		}
 		result["disk.total.bytes"] = totalBytes
 		result["disk.used.byes"] = usedBytes

@@ -31,12 +31,15 @@ func Memory(credentials map[string]interface{}) {
 	result := make(map[string]interface{})
 	session, err := sshClient.NewSession()
 	if err != nil {
+
 		result["error"] = "yes"
 		result["Cause"] = er
 		result["status"] = "fail"
 		data, _ := json.Marshal(result)
 		fmt.Print(string(data))
+
 	} else {
+
 		cmd := "free -b | awk  '{if ($1 != \"total\") print $1 \" \" $2 \" \" $3 \" \" $4 \" \"$7}'"
 		combo, _ := session.CombinedOutput(cmd)
 		output := string(combo)
@@ -45,19 +48,24 @@ func Memory(credentials map[string]interface{}) {
 		memoryValue := strings.Split(res[0], " ")
 		totalBytes, _ := strconv.ParseInt(memoryValue[1], 10, 64)
 		result["memory.total.bytes"] = totalBytes
+
 		usedBytes, _ := strconv.ParseInt(memoryValue[2], 10, 64)
 		result["memory.used.bytes"] = usedBytes
 		result["memory.free.bytes"], _ = strconv.ParseInt(memoryValue[3], 10, 64)
 		result["memory.available.bytes"], _ = strconv.ParseInt(memoryValue[4], 10, 64)
+
 		swapValue := strings.Split(res[1], " ")
 		result["memory.swap.total.bytes"], _ = strconv.ParseInt(swapValue[1], 10, 64)
 		result["memory.swap.used.bytes"], _ = strconv.ParseInt(swapValue[2], 10, 64)
 		result["memory.swap.free.bytes"], _ = strconv.ParseInt(swapValue[3], 10, 64)
 		usedPercent := float64(totalBytes-usedBytes) / float64(totalBytes)
+
 		result["memory.used.percent"] = usedPercent
 		result["memory.available.percent"] = 100 - usedPercent
+
 		result["ip"] = credentials["ip"]
 		result["metric.group"] = credentials["metric.group"]
+
 		data, _ := json.Marshal(result)
 		fmt.Print(string(data))
 	}

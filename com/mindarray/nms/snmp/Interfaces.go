@@ -82,18 +82,18 @@ func InterfaceData(credentials map[string]interface{}) {
 		}
 
 		var oids []string
-		for i := 0; i < len(walkOidArray); i++ {
-			oids = append(oids, snmpIndex+walkOidArray[i])
-			oids = append(oids, description+walkOidArray[i])
-			oids = append(oids, name+walkOidArray[i])
-			oids = append(oids, operationalStatus+walkOidArray[i])
-			oids = append(oids, adminStatus+walkOidArray[i])
-			oids = append(oids, alias+walkOidArray[i])
-			oids = append(oids, sentError+walkOidArray[i])
-			oids = append(oids, receiveError+walkOidArray[i])
-			oids = append(oids, sentOctets+walkOidArray[i])
-			oids = append(oids, receiveOctets+walkOidArray[i])
-			oids = append(oids, ifSpeed+walkOidArray[i])
+		for index := 0; index < len(walkOidArray); index++ {
+			oids = append(oids, snmpIndex+walkOidArray[index])
+			oids = append(oids, description+walkOidArray[index])
+			oids = append(oids, name+walkOidArray[index])
+			oids = append(oids, operationalStatus+walkOidArray[index])
+			oids = append(oids, adminStatus+walkOidArray[index])
+			oids = append(oids, alias+walkOidArray[index])
+			oids = append(oids, sentError+walkOidArray[index])
+			oids = append(oids, receiveError+walkOidArray[index])
+			oids = append(oids, sentOctets+walkOidArray[index])
+			oids = append(oids, receiveOctets+walkOidArray[index])
+			oids = append(oids, ifSpeed+walkOidArray[index])
 		}
 		var startIndex = 0
 		var endIndex = 60
@@ -147,6 +147,7 @@ func InterfaceData(credentials map[string]interface{}) {
 			interfaceValue["interface.speed"] = resultArray[index+9]
 			interfaces = append(interfaces, interfaceValue)
 		}
+
 		result["interfaces"] = interfaces
 		result["ip"] = credentials["ip"]
 		result["metric.group"] = credentials["metric.group"]

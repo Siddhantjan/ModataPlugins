@@ -42,17 +42,17 @@ func Cpu(credentials map[string]interface{}) {
 		var cores []map[string]interface{}
 		size := len(value) / counters
 
-		for counterIndex := 0; counterIndex < len(value)/counters; counterIndex++ {
+		for index := 0; index < len(value)/counters; index++ {
 			count := 0
 			core := make(map[string]interface{})
-			res := strings.Split(value[counterIndex][1], "(")
+			res := strings.Split(value[index][1], "(")
 			if strings.Split(res[1], ")")[0] == "_total" {
-				result["system.cpu.idle.percent"] = value[counterIndex][3]
+				result["system.cpu.idle.percent"] = value[index][3]
 				result["system.cpu.process.percent"] = value[count+size][3]
 				result["system.cpu.user.percent"] = value[count+size+size][3]
 			} else {
-				core["core.name"] = value[counterIndex][2]
-				core["core.idle.percent"] = value[counterIndex][3]
+				core["core.name"] = value[index][2]
+				core["core.idle.percent"] = value[index][3]
 				core["core.process.percent"] = value[count+size][3]
 				core["core.user.percent"] = value[count+size+size][3]
 

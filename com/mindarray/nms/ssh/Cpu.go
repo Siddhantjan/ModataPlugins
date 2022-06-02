@@ -36,6 +36,7 @@ func Cpu(credentials map[string]interface{}) {
 		data, _ := json.Marshal(result)
 		fmt.Print(string(data))
 	} else {
+
 		cmd := "mpstat -P ALL |awk  '{print $4 \" \" $5 \" \" $7 \" \" $14}'"
 		combo, _ := session.CombinedOutput(cmd)
 		output := string(combo)
@@ -44,12 +45,11 @@ func Cpu(credentials map[string]interface{}) {
 		result["system.cpu.user.percent"] = system[1]
 		result["system.cpu.system.percent"] = system[2]
 		result["system.cpu.idle.percent"] = system[3]
-		//fmt.Println(res)
 		var cores []map[string]interface{}
 
-		for outputIterator := 4; outputIterator < len(res)-1; outputIterator++ {
+		for index := 4; index < len(res)-1; index++ {
 			core := make(map[string]interface{})
-			value := strings.Split(res[outputIterator], " ")
+			value := strings.Split(res[index], " ")
 			core["core.name"] = value[0]
 			core["core.user.percent"] = value[1]
 			core["core.system.percent"] = value[2]

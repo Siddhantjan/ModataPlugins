@@ -47,9 +47,9 @@ func Disk(credentials map[string]interface{}) {
 		res := strings.Split(output, "\n")
 
 		var disks []map[string]interface{}
-		for i := 0; i < len(res)-1; i++ {
+		for index := 0; index < len(res)-1; index++ {
 			disk := make(map[string]interface{})
-			value := strings.Split(res[i], " ")
+			value := strings.Split(res[index], " ")
 			disk["disk.name"] = value[0]
 			total, _ := strconv.ParseInt(value[1], 10, 64)
 			totalBytes = int(int64(totalBytes) + total*1024)
