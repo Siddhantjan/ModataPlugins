@@ -109,7 +109,6 @@ func Discovery(credentials map[string]interface{}) {
 		if error != nil {
 			result["error"] = error.Error()
 
-			return
 		}
 		for _, variable := range output.Variables {
 
@@ -140,7 +139,6 @@ func Discovery(credentials map[string]interface{}) {
 		}
 		interfaces = append(interfaces, interfaceValue)
 	}
-	fmt.Println(interfaces)
 
 	result["interfaces"] = interfaces
 	result["ip"] = credentials["ip"]
