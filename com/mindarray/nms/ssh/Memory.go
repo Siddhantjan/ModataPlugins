@@ -65,6 +65,7 @@ func Memory(credentials map[string]interface{}) {
 
 		result["ip"] = credentials["ip"]
 		result["metric.group"] = credentials["metric.group"]
+		result["status"] = "success"
 
 		data, _ := json.Marshal(result)
 		fmt.Print(string(data))
