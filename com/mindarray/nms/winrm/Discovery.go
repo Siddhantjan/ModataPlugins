@@ -26,8 +26,13 @@ func Discovery(credentials map[string]interface{}) {
 	}
 	_, err2 := client.CreateShell()
 	if err2 != nil {
+		userReadableError := strings.Contains(err2.Error(), "connection refused")
+		if userReadableError {
+			errorOccurred = append(errorOccurred, "wrong ip or port ( connection refused )")
+		} else {
+			errorOccurred = append(errorOccurred, "wrong username or password ( unable to authenticate )")
+		}
 		result["status"] = "fail"
-		errorOccurred = append(errorOccurred, err2.Error())
 	}
 	if len(errorOccurred) == 0 {
 		result["status"] = "success"

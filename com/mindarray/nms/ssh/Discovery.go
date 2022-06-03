@@ -30,34 +30,37 @@ func Discovery(credentials map[string]interface{}) {
 
 	result := make(map[string]interface{})
 	if er != nil {
+
+		userReadableError := strings.Contains(er.Error(), "connection refused")
+		if userReadableError {
+			result["error"] = "wrong ip or port ( connection refused )"
+		} else {
+			result["error"] = "wrong username or password ( unable to authenticate )"
+		}
 		result["status"] = "fail"
-		result["error"] = er.Error()
+		data, _ := json.Marshal(result)
+		fmt.Print(string(data))
+
 	} else {
-		result["status"] = "success"
+		session, err := sshClient.NewSession()
+		if err != nil {
+			result["status"] = "fail"
+			result["error"] = err.Error()
+		} else {
+			result["status"] = "success"
+		}
+		cmd := "hostname"
+		combo, err := session.CombinedOutput(cmd)
+		output := string(combo)
+		if err != nil {
+			result["status"] = "fail"
+			result["error"] = er.Error()
+		} else {
+			result["status"] = "success"
+			result["host"] = strings.Split(output, "\n")[0]
+		}
+		data, _ := json.Marshal(result)
+		fmt.Print(string(data))
+
 	}
-	session, err := sshClient.NewSession()
-
-	if err != nil {
-		result["status"] = "fail"
-
-		result["error"] = "yes"
-		result["Cause"] = er
-	} else {
-		result["status"] = "success"
-
-		result["error"] = "no"
-	}
-	cmd := "hostname"
-	combo, err := session.CombinedOutput(cmd)
-	output := string(combo)
-	if err != nil {
-		result["status"] = "fail"
-		result["error"] = er.Error()
-	} else {
-		result["status"] = "success"
-		result["host"] = strings.Split(output, "\n")[0]
-	}
-	data, _ := json.Marshal(result)
-	fmt.Print(string(data))
-
 }
