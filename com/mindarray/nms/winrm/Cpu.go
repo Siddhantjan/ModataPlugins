@@ -1,6 +1,7 @@
 package winrm
 
 import (
+	exception "ModataPlugins/com/mindarray/nms/exceptionHandler"
 	"encoding/json"
 	"fmt"
 	"github.com/masterzen/winrm"
@@ -9,6 +10,7 @@ import (
 )
 
 func Cpu(credentials map[string]interface{}) {
+	defer exception.ErrorHandle(credentials)
 	host := (credentials["ip"]).(string)
 	port := int(credentials["port"].(float64))
 	username := credentials["username"].(string)
